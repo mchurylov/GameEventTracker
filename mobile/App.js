@@ -3,7 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text, LogBox } from 'react-native';
+
+// Suppress the specific TurboModule warning
+LogBox.ignoreLogs(['TurboModuleRegistry']);
 
 // Import screens
 import LoadingScreen from './screens/LoadingScreen';

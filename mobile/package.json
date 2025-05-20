@@ -22,9 +22,11 @@
     "react-native-screens": "~3.20.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "metro": "^0.76.8",
-    "metro-core": "^0.76.8"
+    "@babel/core": "^7.20.0"
+  },
+  "overrides": {
+    "metro": "0.76.0",
+    "metro-resolver": "0.76.0"
   },
   "private": true
 }

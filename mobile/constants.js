@@ -14,6 +14,7 @@ export const CAROUSEL_SLIDES = [
     subtitle: "The Premier Gaming Event",
     description: "Join us for 5 days of high-stakes competition and entertainment",
     image: require('./assets/carousel1.png'),
+    icon: "trophy"
   },
   {
     id: 2,
@@ -21,6 +22,7 @@ export const CAROUSEL_SLIDES = [
     subtitle: "At Atlantis Resort",
     description: "Experience paradise with VIP access to all resort amenities",
     image: require('./assets/carousel2.png'),
+    icon: "bed"
   },
   {
     id: 3,
@@ -28,6 +30,7 @@ export const CAROUSEL_SLIDES = [
     subtitle: "Daily Tournaments",
     description: "Compete for life-changing prizes in our signature events",
     image: require('./assets/carousel3.png'),
+    icon: "cash"
   },
   {
     id: 4,
@@ -35,6 +38,7 @@ export const CAROUSEL_SLIDES = [
     subtitle: "Meet & Greet Events",
     description: "Meet your favorite gaming celebrities and industry icons",
     image: require('./assets/carousel4.png'),
+    icon: "people"
   },
 ];
 

@@ -45,7 +45,7 @@ const EventCarousel = () => {
               style={styles.imageOverlay}
             />
             <View style={styles.iconContainer}>
-              <Ionicons name="trophy" size={40} color="#ffd700" />
+              <Ionicons name={slide.icon} size={40} color="#ffd700" />
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.subtitle}>{slide.subtitle}</Text>
@@ -93,6 +93,19 @@ const styles = StyleSheet.create({
   imageOverlay: {
     ...StyleSheet.absoluteFillObject,
     borderRadius: 10,
+  },
+  iconContainer: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'rgba(26, 26, 26, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.3)',
   },
   textContainer: {
     padding: 20,

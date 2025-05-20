@@ -37,11 +37,11 @@ const BottomNavigation = () => {
         const isActive = location === item.path;
         
         return (
-          <Link key={item.path} href={item.path}>
-            <a className="flex flex-col items-center justify-center w-full h-full">
+          <div key={item.path} className="w-full h-full">
+            <Link href={item.path}>
               <motion.div
                 whileTap={{ scale: 0.9 }}
-                className={`flex flex-col items-center justify-center ${
+                className={`flex flex-col items-center justify-center h-full ${
                   isActive ? 'text-gold' : 'text-white'
                 }`}
               >
@@ -56,8 +56,8 @@ const BottomNavigation = () => {
                   />
                 )}
               </motion.div>
-            </a>
-          </Link>
+            </Link>
+          </div>
         );
       })}
     </motion.nav>

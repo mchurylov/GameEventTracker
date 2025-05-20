@@ -23,19 +23,23 @@ const Home = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
-        <Link href="/signup">
-          <a className="bg-[#222] border border-gold rounded-lg p-4 text-center hover:bg-[#333] transition-colors duration-300">
-            <h3 className="text-gold text-lg mb-2">Get Updates</h3>
-            <p className="text-white text-sm">Stay informed about the event</p>
-          </a>
-        </Link>
+        <div className="bg-[#222] border border-gold rounded-lg p-4 text-center hover:bg-[#333] transition-colors duration-300">
+          <Link href="/signup">
+            <div className="cursor-pointer">
+              <h3 className="text-gold text-lg mb-2">Get Updates</h3>
+              <p className="text-white text-sm">Stay informed about the event</p>
+            </div>
+          </Link>
+        </div>
         
-        <Link href="/event">
-          <a className="bg-[#222] border border-gold rounded-lg p-4 text-center hover:bg-[#333] transition-colors duration-300">
-            <h3 className="text-gold text-lg mb-2">Event Details</h3>
-            <p className="text-white text-sm">Learn more about the tournament</p>
-          </a>
-        </Link>
+        <div className="bg-[#222] border border-gold rounded-lg p-4 text-center hover:bg-[#333] transition-colors duration-300">
+          <Link href="/event">
+            <div className="cursor-pointer">
+              <h3 className="text-gold text-lg mb-2">Event Details</h3>
+              <p className="text-white text-sm">Learn more about the tournament</p>
+            </div>
+          </Link>
+        </div>
       </motion.div>
       
       {/* Event summary */}
@@ -51,12 +55,14 @@ const Home = () => {
           Experience the world's most prestigious slots tournament with a 
           $5 million prize pool and luxury accommodations.
         </p>
-        <Link href="/event">
-          <a className="flex items-center text-gold hover:underline">
-            <span>Learn more</span>
-            <ArrowRight size={16} className="ml-1" />
-          </a>
-        </Link>
+        <div className="flex items-center text-gold hover:underline cursor-pointer">
+          <Link href="/event">
+            <div className="flex items-center">
+              <span>Learn more</span>
+              <ArrowRight size={16} className="ml-1" />
+            </div>
+          </Link>
+        </div>
       </motion.div>
       
       {/* Promotional banner */}
@@ -72,11 +78,11 @@ const Home = () => {
         <p className="text-center text-white mb-4">
           Practice your slots skills and get ready for the tournament with our award-winning apps
         </p>
-        <Link href="/promotions">
-          <a className="block w-full text-center bg-gold text-black font-bold py-3 rounded-lg hover:bg-[#ffec8b] transition-colors">
-            Explore Our Games
-          </a>
-        </Link>
+        <div className="block w-full text-center bg-gold text-black font-bold py-3 rounded-lg hover:bg-[#ffec8b] transition-colors cursor-pointer">
+          <Link href="/promotions">
+            <div>Explore Our Games</div>
+          </Link>
+        </div>
       </motion.div>
     </MobileLayout>
   );

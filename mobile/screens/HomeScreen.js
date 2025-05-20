@@ -1,217 +1,195 @@
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity 
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { MaterialIcons } from '@expo/vector-icons';
-import CountdownTimer from '../components/CountdownTimer';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import EventCarousel from '../components/EventCarousel';
+import CountdownTimer from '../components/CountdownTimer';
 import { EVENT_NAME, EVENT_DATES, EVENT_LOCATION } from '../constants';
 
-const HomeScreen = () => {
-  const navigation = useNavigation();
-  
+const HomeScreen = ({ navigation }) => {
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        {/* Logo Header */}
-        <View style={styles.logoContainer}>
-          <View style={styles.diamondBorder}>
-            <Text style={styles.logoTextWorld}>WORLD</Text>
-            <Text style={styles.logoTextTournament}>TOURNAMENT</Text>
-            <Text style={styles.logoTextSlots}>SLOTS</Text>
+    <LinearGradient
+      colors={['#1a1a1a', '#2a2a2a', '#1a1a1a']}
+      style={styles.container}
+    >
+      <ScrollView style={styles.scrollView}>
+        {/* Header with Logo */}
+        <View style={styles.header}>
+          <Text style={styles.title}>{EVENT_NAME}</Text>
+          <Text style={styles.subtitle}>{EVENT_DATES} • {EVENT_LOCATION}</Text>
+        </View>
+        
+        {/* Countdown Section */}
+        <View style={styles.countdownSection}>
+          <Text style={styles.sectionTitle}>COUNTDOWN TO EVENT</Text>
+          <CountdownTimer />
+        </View>
+        
+        {/* Event Feature Carousel */}
+        <View style={styles.carouselSection}>
+          <Text style={styles.sectionTitle}>EVENT HIGHLIGHTS</Text>
+          <EventCarousel />
+        </View>
+        
+        {/* Quick Actions */}
+        <View style={styles.actionsSection}>
+          <Text style={styles.sectionTitle}>QUICK ACTIONS</Text>
+          <View style={styles.actionsGrid}>
+            <TouchableOpacity 
+              style={styles.actionButton}
+              onPress={() => navigation.navigate('Sign Up')}
+            >
+              <View style={styles.actionIconContainer}>
+                <Ionicons name="person-add" size={24} color="#ffd700" />
+              </View>
+              <Text style={styles.actionText}>Sign Up</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.actionButton}
+              onPress={() => navigation.navigate('Event Details')}
+            >
+              <View style={styles.actionIconContainer}>
+                <Ionicons name="information-circle" size={24} color="#ffd700" />
+              </View>
+              <Text style={styles.actionText}>Event Details</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.actionButton}
+              onPress={() => navigation.navigate('Promotions')}
+            >
+              <View style={styles.actionIconContainer}>
+                <Ionicons name="gift" size={24} color="#ffd700" />
+              </View>
+              <Text style={styles.actionText}>Promotions</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.actionButton}
+              onPress={() => {/* Open external link */}}
+            >
+              <View style={styles.actionIconContainer}>
+                <Ionicons name="share-social" size={24} color="#ffd700" />
+              </View>
+              <Text style={styles.actionText}>Share</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      
-        {/* Countdown timer section */}
-        <CountdownTimer />
         
-        {/* Main Carousel */}
-        <EventCarousel />
-        
-        {/* Quick access buttons */}
-        <View style={styles.buttonGrid}>
-          <TouchableOpacity 
-            style={styles.quickButton}
-            onPress={() => navigation.navigate('Updates')}
-          >
-            <Text style={styles.buttonTitle}>Get Updates</Text>
-            <Text style={styles.buttonText}>Stay informed about the event</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.quickButton}
-            onPress={() => navigation.navigate('Event')}
-          >
-            <Text style={styles.buttonTitle}>Event Details</Text>
-            <Text style={styles.buttonText}>Learn more about the tournament</Text>
-          </TouchableOpacity>
+        {/* Sponsor Section */}
+        <View style={styles.sponsorSection}>
+          <Text style={styles.sectionTitle}>OUR SPONSORS</Text>
+          <View style={styles.sponsorLogos}>
+            {/* Placeholder for sponsor logos */}
+            <View style={styles.sponsorLogo} />
+            <View style={styles.sponsorLogo} />
+            <View style={styles.sponsorLogo} />
+          </View>
         </View>
         
-        {/* Event summary */}
-        <View style={styles.eventSummary}>
-          <Text style={styles.sectionTitle}>About the Event</Text>
-          <Text style={styles.summaryText}>
-            Join us at {EVENT_LOCATION} for the {EVENT_NAME}, {EVENT_DATES}. 
-            Experience the world's most prestigious slots tournament with a 
-            $5 million prize pool and luxury accommodations.
-          </Text>
-          <TouchableOpacity 
-            style={styles.learnMoreButton}
-            onPress={() => navigation.navigate('Event')}
-          >
-            <Text style={styles.learnMoreText}>Learn more</Text>
-            <MaterialIcons name="arrow-forward" size={16} color="#ffd700" />
-          </TouchableOpacity>
+        {/* Footer */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>© 2025 World Tournament Slots</Text>
+          <Text style={styles.footerText}>All Rights Reserved</Text>
         </View>
-        
-        {/* Promotional banner */}
-        <View style={styles.promotionalBanner}>
-          <Text style={styles.promotionTitle}>
-            Take a Spin & Win
-          </Text>
-          <Text style={styles.promotionText}>
-            Practice your slots skills and get ready for the tournament with our award-winning apps
-          </Text>
-          <TouchableOpacity 
-            style={styles.promotionButton}
-            onPress={() => navigation.navigate('Games')}
-          >
-            <Text style={styles.promotionButtonText}>Explore Our Games</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a1a',
   },
-  content: {
+  scrollView: {
+    flex: 1,
     padding: 20,
-    paddingBottom: 40,
   },
-  logoContainer: {
+  header: {
     alignItems: 'center',
-    marginVertical: 20,
+    marginBottom: 30,
+    marginTop: 10,
   },
-  diamondBorder: {
-    width: 200,
-    height: 120,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: '#ffd700',
-    borderRadius: 10,
-    padding: 15,
-  },
-  logoTextWorld: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#ffd700',
-  },
-  logoTextTournament: {
-    fontSize: 16,
-    color: 'white',
-    marginVertical: 2,
-  },
-  logoTextSlots: {
+  title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#ffd700',
-    letterSpacing: 3,
-  },
-  buttonGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 25,
-  },
-  quickButton: {
-    backgroundColor: '#222',
-    borderColor: '#ffd700',
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 15,
-    width: '48%',
-    alignItems: 'center',
-  },
-  buttonTitle: {
-    color: '#ffd700',
-    fontSize: 16,
-    fontWeight: 'bold',
+    textAlign: 'center',
     marginBottom: 5,
   },
-  buttonText: {
+  subtitle: {
+    fontSize: 16,
     color: 'white',
-    fontSize: 12,
     textAlign: 'center',
   },
-  eventSummary: {
-    backgroundColor: '#222',
-    borderRadius: 8,
-    padding: 15,
-    marginBottom: 25,
+  countdownSection: {
+    marginBottom: 30,
+    alignItems: 'center',
+  },
+  carouselSection: {
+    marginBottom: 30,
   },
   sectionTitle: {
-    color: '#ffd700',
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  summaryText: {
+    fontWeight: '600',
     color: 'white',
     marginBottom: 15,
-    lineHeight: 22,
   },
-  learnMoreButton: {
+  actionsSection: {
+    marginBottom: 30,
+  },
+  actionsGrid: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  actionButton: {
+    width: '48%',
+    backgroundColor: '#2a2a2a',
+    borderRadius: 10,
+    padding: 15,
     alignItems: 'center',
-  },
-  learnMoreText: {
-    color: '#ffd700',
-    marginRight: 5,
-  },
-  promotionalBanner: {
-    backgroundColor: 'black',
-    borderColor: '#ffd700',
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 20,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  promotionTitle: {
-    color: '#ffd700',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  promotionText: {
-    color: 'white',
-    textAlign: 'center',
     marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#333',
   },
-  promotionButton: {
-    backgroundColor: '#ffd700',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    width: '100%',
+  actionIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  actionText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  sponsorSection: {
+    marginBottom: 30,
+  },
+  sponsorLogos: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  sponsorLogo: {
+    width: '30%',
+    height: 60,
+    backgroundColor: '#2a2a2a',
+    borderRadius: 5,
+  },
+  footer: {
+    marginBottom: 20,
     alignItems: 'center',
   },
-  promotionButtonText: {
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: 16,
-  }
+  footerText: {
+    color: '#a0a0a0',
+    fontSize: 14,
+    marginBottom: 5,
+  },
 });
 
 export default HomeScreen;

@@ -1,240 +1,379 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  TextInput, 
+  TouchableOpacity, 
+  ScrollView,
+  Switch,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView
+  ActivityIndicator
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 
 const SignupScreen = () => {
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState({});
-
-  const validateForm = () => {
-    let formErrors = {};
-    let isValid = true;
-
-    if (!name.trim()) {
-      formErrors.name = 'Name is required';
-      isValid = false;
-    } else if (name.trim().length < 2) {
-      formErrors.name = 'Name must be at least 2 characters';
-      isValid = false;
-    }
-
-    if (!email.trim()) {
-      formErrors.email = 'Email is required';
-      isValid = false;
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        formErrors.email = 'Please enter a valid email address';
-        isValid = false;
-      }
-    }
-
-    setErrors(formErrors);
-    return isValid;
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [receiveUpdates, setReceiveUpdates] = useState(true);
+  const [receivePromo, setReceivePromo] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
-
+  
+  const validatePhoneNumber = (phone) => {
+    // Basic validation - can be more complex based on requirements
+    return phone.length >= 10;
+  };
+  
   const handleSubmit = () => {
-    if (validateForm()) {
-      setIsLoading(true);
-      
-      // Simulate API call
-      setTimeout(() => {
-        setIsLoading(false);
-        setSubmitted(true);
-        Alert.alert(
-          "Success!",
-          `Thank you, ${name}! You've been subscribed to updates for the World Tournament Slots event.`,
-          [{ text: "OK" }]
-        );
-      }, 1500);
+    // Validate form
+    if (!firstName.trim()) {
+      Alert.alert('Error', 'First name is required');
+      return;
     }
-  };
-
-  const resetForm = () => {
-    setName('');
-    setEmail('');
-    setSubmitted(false);
-    setErrors({});
+    
+    if (!lastName.trim()) {
+      Alert.alert('Error', 'Last name is required');
+      return;
+    }
+    
+    if (!email.trim() || !validateEmail(email)) {
+      Alert.alert('Error', 'Please enter a valid email address');
+      return;
+    }
+    
+    if (phoneNumber && !validatePhoneNumber(phoneNumber)) {
+      Alert.alert('Error', 'Please enter a valid phone number');
+      return;
+    }
+    
+    // Submit form
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      Alert.alert(
+        'Thank You!',
+        'You have successfully signed up for the World Tournament Slots event updates. We look forward to seeing you at the event!',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              // Clear form
+              setFirstName('');
+              setLastName('');
+              setEmail('');
+              setPhoneNumber('');
+              setReceiveUpdates(true);
+              setReceivePromo(true);
+            }
+          }
+        ]
+      );
+    }, 1500);
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <LinearGradient
+      colors={['#1a1a1a', '#2a2a2a', '#1a1a1a']}
       style={styles.container}
     >
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>Get Event Updates</Text>
+      <ScrollView style={styles.scrollView}>
+        {/* Header Section */}
+        <View style={styles.headerSection}>
+          <Text style={styles.headerTitle}>SIGN UP</Text>
+          <Text style={styles.headerSubtitle}>
+            Register to receive event updates, exclusive offers, and early access to tournament registration.
+          </Text>
+        </View>
         
-        {submitted ? (
-          <View style={styles.formContainer}>
-            <Text style={styles.successTitle}>Thank You!</Text>
-            <Text style={styles.successText}>
-              You're now signed up to receive updates about the World Tournament Slots event. 
-              We'll keep you informed about the latest news and exclusive offers.
-            </Text>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={resetForm}
-            >
-              <Text style={styles.buttonText}>Sign Up Another Email</Text>
-            </TouchableOpacity>
+        {/* Form Section */}
+        <View style={styles.formSection}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>First Name*</Text>
+            <TextInput
+              style={styles.input}
+              value={firstName}
+              onChangeText={setFirstName}
+              placeholder="John"
+              placeholderTextColor="#777"
+            />
           </View>
-        ) : (
-          <View style={styles.formContainer}>
-            <Text style={styles.description}>
-              Sign up to receive exclusive updates, special offers, and important information about the 
-              World Tournament Slots event. Be the first to know about schedule changes and VIP opportunities.
-            </Text>
-            
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Full Name</Text>
-              <TextInput
-                style={[styles.input, errors.name ? styles.inputError : null]}
-                placeholder="Enter your name"
-                placeholderTextColor="#666"
-                value={name}
-                onChangeText={setName}
+          
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Last Name*</Text>
+            <TextInput
+              style={styles.input}
+              value={lastName}
+              onChangeText={setLastName}
+              placeholder="Doe"
+              placeholderTextColor="#777"
+            />
+          </View>
+          
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Email Address*</Text>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+              placeholder="johndoe@example.com"
+              placeholderTextColor="#777"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </View>
+          
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Phone Number (optional)</Text>
+            <TextInput
+              style={styles.input}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              placeholder="(123) 456-7890"
+              placeholderTextColor="#777"
+              keyboardType="phone-pad"
+            />
+          </View>
+          
+          <View style={styles.switchGroup}>
+            <View style={styles.switchItem}>
+              <Text style={styles.switchLabel}>
+                Receive event updates and announcements
+              </Text>
+              <Switch
+                value={receiveUpdates}
+                onValueChange={setReceiveUpdates}
+                trackColor={{ false: '#444', true: 'rgba(255, 215, 0, 0.3)' }}
+                thumbColor={receiveUpdates ? '#ffd700' : '#f4f3f4'}
               />
-              {errors.name ? <Text style={styles.errorText}>{errors.name}</Text> : null}
             </View>
             
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email Address</Text>
-              <TextInput
-                style={[styles.input, errors.email ? styles.inputError : null]}
-                placeholder="Enter your email"
-                placeholderTextColor="#666"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                value={email}
-                onChangeText={setEmail}
+            <View style={styles.switchItem}>
+              <Text style={styles.switchLabel}>
+                Receive promotional offers and discounts
+              </Text>
+              <Switch
+                value={receivePromo}
+                onValueChange={setReceivePromo}
+                trackColor={{ false: '#444', true: 'rgba(255, 215, 0, 0.3)' }}
+                thumbColor={receivePromo ? '#ffd700' : '#f4f3f4'}
               />
-              {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
             </View>
-            
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleSubmit}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <ActivityIndicator color="#000" size="small" />
-              ) : (
-                <Text style={styles.buttonText}>Submit</Text>
-              )}
-            </TouchableOpacity>
-            
-            <Text style={styles.disclaimer}>
-              By signing up, you agree to receive emails about this event. Your information will never be shared with third parties.
-            </Text>
           </View>
-        )}
+          
+          <TouchableOpacity 
+            style={styles.submitButton}
+            onPress={handleSubmit}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <ActivityIndicator color="#1a1a1a" />
+            ) : (
+              <Text style={styles.submitButtonText}>SUBMIT</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+        
+        {/* Benefits Section */}
+        <View style={styles.benefitsSection}>
+          <Text style={styles.benefitsSectionTitle}>SIGNUP BENEFITS</Text>
+          
+          <View style={styles.benefitItem}>
+            <View style={styles.benefitIconContainer}>
+              <Ionicons name="calendar" size={24} color="#ffd700" />
+            </View>
+            <View style={styles.benefitContent}>
+              <Text style={styles.benefitTitle}>Early Tournament Registration</Text>
+              <Text style={styles.benefitDescription}>
+                Be the first to secure your spot in our high-stakes tournaments.
+              </Text>
+            </View>
+          </View>
+          
+          <View style={styles.benefitItem}>
+            <View style={styles.benefitIconContainer}>
+              <Ionicons name="gift" size={24} color="#ffd700" />
+            </View>
+            <View style={styles.benefitContent}>
+              <Text style={styles.benefitTitle}>Exclusive Promotions</Text>
+              <Text style={styles.benefitDescription}>
+                Receive special offers and discounts on resort accommodations.
+              </Text>
+            </View>
+          </View>
+          
+          <View style={styles.benefitItem}>
+            <View style={styles.benefitIconContainer}>
+              <Ionicons name="notifications" size={24} color="#ffd700" />
+            </View>
+            <View style={styles.benefitContent}>
+              <Text style={styles.benefitTitle}>Event Updates</Text>
+              <Text style={styles.benefitDescription}>
+                Stay informed about schedule changes and important announcements.
+              </Text>
+            </View>
+          </View>
+        </View>
+        
+        {/* Privacy Notice */}
+        <View style={styles.privacySection}>
+          <Text style={styles.privacyText}>
+            By submitting this form, you agree to our Privacy Policy and Terms of Service.
+            We respect your privacy and will never share your information with third parties
+            without your consent.
+          </Text>
+        </View>
+        
+        {/* Footer */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>© 2025 World Tournament Slots</Text>
+          <Text style={styles.footerText}>All Rights Reserved</Text>
+        </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a1a',
   },
-  scrollContent: {
+  scrollView: {
+    flex: 1,
     padding: 20,
-    paddingBottom: 40,
   },
-  title: {
-    fontSize: 24,
+  headerSection: {
+    marginBottom: 30,
+    marginTop: 10,
+  },
+  headerTitle: {
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#ffd700',
-    textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
   },
-  formContainer: {
-    backgroundColor: '#222',
-    borderRadius: 10,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: '#ffd700',
-  },
-  description: {
-    color: 'white',
+  headerSubtitle: {
     fontSize: 16,
-    marginBottom: 20,
-    lineHeight: 22,
+    color: 'white',
+    lineHeight: 24,
+  },
+  formSection: {
+    marginBottom: 30,
   },
   inputGroup: {
     marginBottom: 20,
   },
   label: {
-    color: 'white',
     fontSize: 16,
+    color: 'white',
     marginBottom: 8,
   },
   input: {
     backgroundColor: '#333',
+    borderRadius: 5,
+    padding: 15,
+    color: 'white',
     borderWidth: 1,
     borderColor: '#444',
-    borderRadius: 6,
-    padding: 12,
-    color: 'white',
+  },
+  switchGroup: {
+    marginBottom: 25,
+  },
+  switchItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  switchLabel: {
     fontSize: 16,
+    color: 'white',
+    flex: 1,
+    paddingRight: 10,
   },
-  inputError: {
-    borderColor: '#ff4d4d',
-  },
-  errorText: {
-    color: '#ff4d4d',
-    fontSize: 14,
-    marginTop: 5,
-  },
-  button: {
+  submitButton: {
     backgroundColor: '#ffd700',
-    borderRadius: 6,
+    borderRadius: 5,
     padding: 15,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    marginBottom: 15,
   },
-  buttonText: {
-    color: '#000',
+  submitButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#1a1a1a',
   },
-  disclaimer: {
-    color: '#999',
-    fontSize: 12,
-    marginTop: 20,
-    textAlign: 'center',
+  benefitsSection: {
+    marginBottom: 30,
   },
-  successTitle: {
-    fontSize: 22,
+  benefitsSectionTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#ffd700',
-    textAlign: 'center',
-    marginBottom: 15,
+    marginBottom: 20,
   },
-  successText: {
-    color: 'white',
+  benefitItem: {
+    flexDirection: 'row',
+    marginBottom: 20,
+    backgroundColor: '#2a2a2a',
+    padding: 15,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#444',
+  },
+  benefitIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  benefitContent: {
+    flex: 1,
+  },
+  benefitTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#ffd700',
+    marginBottom: 5,
+  },
+  benefitDescription: {
     fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 25,
+    color: 'white',
     lineHeight: 22,
-  }
+  },
+  privacySection: {
+    backgroundColor: '#2a2a2a',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 30,
+    borderWidth: 1,
+    borderColor: '#444',
+  },
+  privacyText: {
+    fontSize: 14,
+    color: '#a0a0a0',
+    lineHeight: 20,
+  },
+  footer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  footerText: {
+    color: '#a0a0a0',
+    fontSize: 14,
+    marginBottom: 5,
+  },
 });
 
 export default SignupScreen;

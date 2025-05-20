@@ -1,267 +1,345 @@
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity,
-  ImageBackground,
-  Dimensions
-} from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import { EVENT_NAME, EVENT_DATES, EVENT_LOCATION, RESORT_AMENITIES } from '../constants';
-
-const { width } = Dimensions.get('window');
 
 const EventDetailsScreen = () => {
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        {/* Hero Section */}
-        <ImageBackground
-          source={{ uri: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80' }}
-          style={styles.heroImage}
-          imageStyle={styles.heroImageStyle}
-        >
-          <View style={styles.heroOverlay}>
-            <Text style={styles.heroTitle}>{EVENT_NAME}</Text>
-            <View style={styles.heroDetail}>
-              <MaterialIcons name="event" size={16} color="white" style={styles.icon} />
-              <Text style={styles.heroText}>{EVENT_DATES}</Text>
-            </View>
-            <View style={styles.heroDetail}>
-              <MaterialIcons name="location-on" size={16} color="white" style={styles.icon} />
-              <Text style={styles.heroText}>{EVENT_LOCATION}</Text>
-            </View>
-          </View>
-        </ImageBackground>
-        
-        {/* Event Description */}
+    <LinearGradient
+      colors={['#1a1a1a', '#2a2a2a', '#1a1a1a']}
+      style={styles.container}
+    >
+      <ScrollView style={styles.scrollView}>
+        {/* Event Overview Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Event Overview</Text>
-          <Text style={styles.paragraphText}>
-            Join us for the world's most prestigious slots tournament, featuring top players from around the globe 
-            competing for glory and a share of the massive $5 million prize pool.
-          </Text>
-          <Text style={styles.paragraphText}>
-            The World Tournament Slots is an invitation-only event hosted at the luxurious Atlantis resort 
-            in the Bahamas, offering a perfect blend of high-stakes competition and paradise relaxation.
-          </Text>
-        </View>
-        
-        {/* Event Highlights */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Event Highlights</Text>
-          <View style={styles.highlightsGrid}>
-            <View style={styles.highlightItem}>
-              <MaterialIcons name="emoji-events" size={24} color="#ffd700" style={styles.highlightIcon} />
-              <Text style={styles.highlightTitle}>World-Class Competition</Text>
-              <Text style={styles.highlightDesc}>Compete against the best players</Text>
-            </View>
+          <Text style={styles.sectionTitle}>EVENT OVERVIEW</Text>
+          <LinearGradient
+            colors={['#2a2a2a', '#333']}
+            style={styles.card}
+          >
+            <Text style={styles.eventName}>{EVENT_NAME}</Text>
+            <Text style={styles.eventDetails}>{EVENT_DATES}</Text>
+            <Text style={styles.eventDetails}>{EVENT_LOCATION}</Text>
             
-            <View style={styles.highlightItem}>
-              <MaterialIcons name="attach-money" size={24} color="#ffd700" style={styles.highlightIcon} />
-              <Text style={styles.highlightTitle}>$5M Prize Pool</Text>
-              <Text style={styles.highlightDesc}>Largest prize in tournament history</Text>
-            </View>
+            <View style={styles.divider} />
             
-            <View style={styles.highlightItem}>
-              <MaterialIcons name="star" size={24} color="#ffd700" style={styles.highlightIcon} />
-              <Text style={styles.highlightTitle}>VIP Experience</Text>
-              <Text style={styles.highlightDesc}>Exclusive access and amenities</Text>
-            </View>
+            <Text style={styles.description}>
+              Join us for the world's premier slot gaming event featuring five days of high-stakes 
+              tournaments, exclusive gaming experiences, and luxury entertainment.
+            </Text>
             
-            <View style={styles.highlightItem}>
-              <MaterialIcons name="restaurant" size={24} color="#ffd700" style={styles.highlightIcon} />
-              <Text style={styles.highlightTitle}>Gourmet Dining</Text>
-              <Text style={styles.highlightDesc}>World-class culinary offerings</Text>
-            </View>
-          </View>
-        </View>
-        
-        {/* Resort Information */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>About Atlantis Resort</Text>
-          <Text style={styles.paragraphText}>
-            Atlantis Paradise Island is a world-renowned luxury resort located on Paradise Island in the Bahamas. 
-            It features a variety of accommodations, from the iconic Royal Towers to The Cove and The Reef.
-          </Text>
-          <Text style={styles.paragraphText}>
-            With its stunning beaches, marine habitats, and Aquaventure water park, Atlantis offers the perfect 
-            backdrop for our prestigious tournament.
-          </Text>
-          
-          {/* Resort amenities */}
-          <Text style={styles.subsectionTitle}>Resort Amenities</Text>
-          <View style={styles.amenitiesContainer}>
-            {RESORT_AMENITIES.map((amenity, index) => (
-              <View key={index} style={styles.amenityItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.amenityText}>{amenity}</Text>
+            <View style={styles.highlights}>
+              <View style={styles.highlightItem}>
+                <Ionicons name="trophy" size={24} color="#ffd700" />
+                <Text style={styles.highlightText}>$5M Prize Pool</Text>
               </View>
+              
+              <View style={styles.highlightItem}>
+                <Ionicons name="people" size={24} color="#ffd700" />
+                <Text style={styles.highlightText}>1,000+ Players</Text>
+              </View>
+              
+              <View style={styles.highlightItem}>
+                <Ionicons name="game-controller" size={24} color="#ffd700" />
+                <Text style={styles.highlightText}>100+ Games</Text>
+              </View>
+            </View>
+          </LinearGradient>
+        </View>
+        
+        {/* Resort Amenities Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>RESORT AMENITIES</Text>
+          <View style={styles.amenitiesContainer}>
+            {RESORT_AMENITIES.map(amenity => (
+              <LinearGradient
+                key={amenity.id}
+                colors={['#2a2a2a', '#333']}
+                style={styles.amenityCard}
+              >
+                <View style={styles.amenityIconContainer}>
+                  <Ionicons name={amenity.icon} size={30} color="#ffd700" />
+                </View>
+                <Text style={styles.amenityName}>{amenity.name}</Text>
+                <Text style={styles.amenityDescription}>{amenity.description}</Text>
+              </LinearGradient>
             ))}
           </View>
         </View>
         
-        {/* Registration Info */}
-        <View style={styles.callToAction}>
-          <Text style={styles.ctaTitle}>How to Participate</Text>
-          <Text style={styles.ctaText}>
-            The World Tournament Slots is an invitation-only event. Qualify through our regional tournaments
-            or through our partner casinos.
-          </Text>
-          <TouchableOpacity style={styles.ctaButton}>
-            <Text style={styles.ctaButtonText}>Learn About Qualification</Text>
-          </TouchableOpacity>
+        {/* Tournament Schedule Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>TOURNAMENT SCHEDULE</Text>
+          <LinearGradient
+            colors={['#2a2a2a', '#333']}
+            style={styles.card}
+          >
+            <Text style={styles.scheduleNote}>
+              Our event features multiple tournaments each day with varying buy-ins and prize pools.
+              Full schedule and registration will be available 14 days before the event.
+            </Text>
+            
+            <View style={styles.scheduleHighlights}>
+              <View style={styles.dayItem}>
+                <Text style={styles.dayHeader}>DAY 1</Text>
+                <Text style={styles.dayText}>Welcome Reception</Text>
+                <Text style={styles.dayText}>Opening Tournaments</Text>
+              </View>
+              
+              <View style={styles.dayItem}>
+                <Text style={styles.dayHeader}>DAY 3</Text>
+                <Text style={styles.dayText}>Main Event Begins</Text>
+                <Text style={styles.dayText}>Celebrity Challenge</Text>
+              </View>
+              
+              <View style={styles.dayItem}>
+                <Text style={styles.dayHeader}>DAY 5</Text>
+                <Text style={styles.dayText}>Final Tables</Text>
+                <Text style={styles.dayText}>Awards Ceremony</Text>
+              </View>
+            </View>
+          </LinearGradient>
         </View>
-      </View>
-    </ScrollView>
+        
+        {/* Travel & Accommodation */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>TRAVEL & ACCOMMODATION</Text>
+          <LinearGradient
+            colors={['#2a2a2a', '#333']}
+            style={styles.card}
+          >
+            <Text style={styles.description}>
+              Exclusive room rates are available for tournament participants. Book through our 
+              dedicated reservation link to receive special pricing and added amenities.
+            </Text>
+            
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttonText}>BOOK ACCOMMODATION</Text>
+            </TouchableOpacity>
+            
+            <View style={styles.divider} />
+            
+            <Text style={styles.description}>
+              Transportation options from the airport to Atlantis Resort:
+            </Text>
+            
+            <View style={styles.transportOptions}>
+              <View style={styles.transportItem}>
+                <Ionicons name="car" size={20} color="#ffd700" />
+                <Text style={styles.transportText}>Airport Shuttle</Text>
+              </View>
+              
+              <View style={styles.transportItem}>
+                <Ionicons name="car-sport" size={20} color="#ffd700" />
+                <Text style={styles.transportText}>Private Taxi</Text>
+              </View>
+              
+              <View style={styles.transportItem}>
+                <Ionicons name="boat" size={20} color="#ffd700" />
+                <Text style={styles.transportText}>Water Taxi</Text>
+              </View>
+            </View>
+          </LinearGradient>
+        </View>
+        
+        {/* Contact Information */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>CONTACT INFORMATION</Text>
+          <LinearGradient
+            colors={['#2a2a2a', '#333']}
+            style={styles.card}
+          >
+            <View style={styles.contactItem}>
+              <Ionicons name="mail" size={20} color="#ffd700" />
+              <Text style={styles.contactText}>info@worldtournamentslots.com</Text>
+            </View>
+            
+            <View style={styles.contactItem}>
+              <Ionicons name="call" size={20} color="#ffd700" />
+              <Text style={styles.contactText}>+1 (800) 555-1234</Text>
+            </View>
+            
+            <View style={styles.contactItem}>
+              <Ionicons name="logo-twitter" size={20} color="#ffd700" />
+              <Text style={styles.contactText}>@WorldTournamentSlots</Text>
+            </View>
+            
+            <View style={styles.contactItem}>
+              <Ionicons name="logo-instagram" size={20} color="#ffd700" />
+              <Text style={styles.contactText}>@WorldTournamentSlots</Text>
+            </View>
+          </LinearGradient>
+        </View>
+        
+        {/* Footer */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>© 2025 World Tournament Slots</Text>
+          <Text style={styles.footerText}>Terms & Conditions Apply</Text>
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a1a',
   },
-  content: {
-    padding: 0,
-    paddingBottom: 30,
-  },
-  heroImage: {
-    height: 220,
-    width: width,
-    justifyContent: 'flex-end',
-  },
-  heroImageStyle: {
-    opacity: 0.7,
-  },
-  heroOverlay: {
-    backgroundColor: 'rgba(0,0,0,0.6)',
+  scrollView: {
+    flex: 1,
     padding: 20,
   },
-  heroTitle: {
+  section: {
+    marginBottom: 25,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'white',
+    marginBottom: 15,
+  },
+  card: {
+    borderRadius: 10,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: '#444',
+  },
+  eventName: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#ffd700',
-    marginBottom: 10,
-  },
-  heroDetail: {
-    flexDirection: 'row',
-    alignItems: 'center',
     marginBottom: 5,
   },
-  icon: {
-    marginRight: 8,
-  },
-  heroText: {
-    color: 'white',
+  eventDetails: {
     fontSize: 16,
-  },
-  section: {
-    backgroundColor: '#222',
-    borderRadius: 8,
-    padding: 16,
-    margin: 16,
-    marginTop: 16,
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    color: '#ffd700',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  paragraphText: {
     color: 'white',
+    marginBottom: 3,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#444',
+    marginVertical: 15,
+  },
+  description: {
     fontSize: 16,
+    color: '#e0e0e0',
     lineHeight: 24,
     marginBottom: 15,
   },
-  highlightsGrid: {
+  highlights: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
-  },
-  highlightItem: {
-    backgroundColor: '#2a2a2a',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 10,
-    width: '48%',
-  },
-  highlightIcon: {
-    marginBottom: 8,
-  },
-  highlightTitle: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 14,
-    marginBottom: 4,
-  },
-  highlightDesc: {
-    color: '#aaa',
-    fontSize: 12,
-  },
-  subsectionTitle: {
-    color: '#ffd700',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
     marginTop: 10,
   },
-  amenitiesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  amenityItem: {
-    flexDirection: 'row',
+  highlightItem: {
     alignItems: 'center',
-    width: '50%',
-    marginBottom: 8,
   },
-  bulletPoint: {
-    color: '#ffd700',
-    fontSize: 18,
-    marginRight: 8,
-  },
-  amenityText: {
+  highlightText: {
     color: 'white',
-    fontSize: 14,
+    marginTop: 5,
+    fontWeight: '500',
   },
-  callToAction: {
-    backgroundColor: '#ffd700',
-    borderRadius: 8,
-    padding: 20,
-    margin: 16,
-    marginTop: 8,
-    alignItems: 'center',
-  },
-  ctaTitle: {
-    color: 'black',
-    fontSize: 20,
-    fontWeight: 'bold',
+  amenitiesContainer: {
     marginBottom: 10,
   },
-  ctaText: {
-    color: 'black',
-    textAlign: 'center',
+  amenityCard: {
+    borderRadius: 10,
+    padding: 20,
     marginBottom: 15,
-    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#444',
   },
-  ctaButton: {
-    backgroundColor: 'black',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    width: '100%',
+  amenityIconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 15,
   },
-  ctaButtonText: {
+  amenityName: {
+    fontSize: 18,
+    fontWeight: '600',
     color: '#ffd700',
+    marginBottom: 10,
+  },
+  amenityDescription: {
+    fontSize: 16,
+    color: '#e0e0e0',
+    lineHeight: 24,
+  },
+  scheduleNote: {
+    fontSize: 16,
+    color: '#e0e0e0',
+    lineHeight: 24,
+    marginBottom: 20,
+  },
+  scheduleHighlights: {
+    backgroundColor: '#222',
+    borderRadius: 8,
+    padding: 15,
+  },
+  dayItem: {
+    marginBottom: 15,
+  },
+  dayHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#ffd700',
+    marginBottom: 5,
+  },
+  dayText: {
+    fontSize: 16,
+    color: 'white',
+    marginBottom: 2,
+  },
+  button: {
+    backgroundColor: '#ffd700',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginVertical: 15,
+  },
+  buttonText: {
+    color: '#1a1a1a',
     fontWeight: 'bold',
     fontSize: 16,
-  }
+  },
+  transportOptions: {
+    marginTop: 10,
+  },
+  transportItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  transportText: {
+    color: 'white',
+    marginLeft: 10,
+    fontSize: 16,
+  },
+  contactItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  contactText: {
+    color: 'white',
+    marginLeft: 10,
+    fontSize: 16,
+  },
+  footer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  footerText: {
+    color: '#a0a0a0',
+    fontSize: 14,
+    marginBottom: 5,
+  },
 });
 
 export default EventDetailsScreen;

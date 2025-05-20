@@ -1,318 +1,500 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  Modal
-} from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import { VENUE_LOCATIONS } from '../constants';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
+const MAP_WIDTH = width - 40;
+const MAP_HEIGHT = MAP_WIDTH * 0.75; // Aspect ratio for the map
 
 const VenueMapScreen = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
-  
+  const [activeTab, setActiveTab] = useState('map');
+
   const handleLocationPress = (location) => {
     setSelectedLocation(location);
   };
-  
-  const closeLocationInfo = () => {
+
+  const handleCloseLocationDetails = () => {
     setSelectedLocation(null);
   };
-  
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Venue Map</Text>
+    <LinearGradient
+      colors={['#1a1a1a', '#2a2a2a', '#1a1a1a']}
+      style={styles.container}
+    >
+      {/* Tabs */}
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'map' && styles.activeTab]}
+          onPress={() => setActiveTab('map')}
+        >
+          <Ionicons 
+            name="map" 
+            size={20} 
+            color={activeTab === 'map' ? '#ffd700' : 'white'} 
+          />
+          <Text 
+            style={[styles.tabText, activeTab === 'map' && styles.activeTabText]}
+          >
+            Map View
+          </Text>
+        </TouchableOpacity>
         
-        <Text style={styles.subtitle}>
-          Navigate the Atlantis Resort with our interactive venue map. Tap on locations to learn more.
-        </Text>
-        
-        {/* Map Container */}
-        <View style={styles.mapContainer}>
-          {/* This would be a real map in a production app */}
-          <View style={styles.mapBackground}>
-            {/* Decorative map elements */}
-            <View style={[styles.mapDecor, styles.mapDecor1]} />
-            <View style={[styles.mapDecor, styles.mapDecor2]} />
-            <View style={[styles.mapDecor, styles.mapDecor3]} />
-            <View style={[styles.mapDecor, styles.mapDecor4]} />
-            
-            {/* Map Pins */}
-            {VENUE_LOCATIONS.map((location) => (
-              <TouchableOpacity
-                key={location.id}
-                style={[
-                  styles.locationPin,
-                  {
-                    top: location.y,
-                    left: location.x,
-                  }
-                ]}
-                onPress={() => handleLocationPress(location)}
-              >
-                <MaterialIcons 
-                  name="place" 
-                  size={30} 
-                  color="#ffd700" 
-                  style={selectedLocation?.id === location.id ? styles.selectedPin : null}
-                />
-                <Text style={styles.pinLabel}>{location.name}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          
-          {/* Map Legend */}
-          <View style={styles.mapLegend}>
-            <View style={styles.legendItem}>
-              <MaterialIcons name="place" size={14} color="#ffd700" style={styles.legendIcon} />
-              <Text style={styles.legendText}>Event Locations</Text>
-            </View>
-            <Text style={styles.legendNote}>Tap pins for details</Text>
-          </View>
-        </View>
-        
-        {/* Venue Directory */}
-        <View style={styles.directoryContainer}>
-          <Text style={styles.directoryTitle}>Venue Directory</Text>
-          {VENUE_LOCATIONS.map((location) => (
-            <TouchableOpacity 
-              key={location.id} 
-              style={styles.directoryItem}
-              onPress={() => handleLocationPress(location)}
-            >
-              <MaterialIcons name="place" size={18} color="#ffd700" style={styles.directoryIcon} />
-              <View style={styles.directoryTextContainer}>
-                <Text style={styles.directoryItemName}>{location.name}</Text>
-                <Text style={styles.directoryItemDesc}>{location.description}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'list' && styles.activeTab]}
+          onPress={() => setActiveTab('list')}
+        >
+          <Ionicons 
+            name="list" 
+            size={20} 
+            color={activeTab === 'list' ? '#ffd700' : 'white'} 
+          />
+          <Text 
+            style={[styles.tabText, activeTab === 'list' && styles.activeTabText]}
+          >
+            List View
+          </Text>
+        </TouchableOpacity>
       </View>
-      
-      {/* Location Detail Modal */}
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={selectedLocation !== null}
-        onRequestClose={closeLocationInfo}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <TouchableOpacity style={styles.closeButton} onPress={closeLocationInfo}>
-              <MaterialIcons name="close" size={24} color="#aaa" />
-            </TouchableOpacity>
+
+      <ScrollView style={styles.content}>
+        {activeTab === 'map' ? (
+          <View style={styles.mapSection}>
+            <Text style={styles.sectionTitle}>VENUE MAP</Text>
+            <Text style={styles.sectionSubtitle}>
+              Tap on locations to view details
+            </Text>
             
-            {selectedLocation && (
-              <>
-                <Text style={styles.modalTitle}>{selectedLocation.name}</Text>
-                <Text style={styles.modalDescription}>{selectedLocation.description}</Text>
-                
-                <TouchableOpacity 
-                  style={styles.closeModalButton}
-                  onPress={closeLocationInfo}
+            <View style={styles.mapContainer}>
+              {/* This would be replaced with a real map image */}
+              <View style={styles.mapPlaceholder}>
+                <LinearGradient
+                  colors={['#2a2a2a', '#333']}
+                  style={styles.mapBackground}
                 >
-                  <Text style={styles.closeModalButtonText}>Close</Text>
+                  <Text style={styles.mapPlaceholderText}>Resort Map</Text>
+                  
+                  {/* Location Markers */}
+                  {VENUE_LOCATIONS.map((location) => (
+                    <TouchableOpacity
+                      key={location.id}
+                      style={[
+                        styles.locationMarker,
+                        {
+                          left: location.x * (MAP_WIDTH / 300),
+                          top: location.y * (MAP_HEIGHT / 300),
+                        },
+                        selectedLocation?.id === location.id && styles.selectedMarker
+                      ]}
+                      onPress={() => handleLocationPress(location)}
+                    >
+                      <View style={styles.markerDot} />
+                    </TouchableOpacity>
+                  ))}
+                </LinearGradient>
+              </View>
+            </View>
+            
+            {/* Location Legend */}
+            <View style={styles.legendContainer}>
+              <Text style={styles.legendTitle}>LOCATIONS</Text>
+              <View style={styles.legend}>
+                {VENUE_LOCATIONS.map((location) => (
+                  <TouchableOpacity
+                    key={location.id}
+                    style={[
+                      styles.legendItem,
+                      selectedLocation?.id === location.id && styles.selectedLegendItem
+                    ]}
+                    onPress={() => handleLocationPress(location)}
+                  >
+                    <View 
+                      style={[
+                        styles.legendDot,
+                        selectedLocation?.id === location.id && styles.selectedLegendDot
+                      ]} 
+                    />
+                    <Text 
+                      style={[
+                        styles.legendText,
+                        selectedLocation?.id === location.id && styles.selectedLegendText
+                      ]}
+                    >
+                      {location.name}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          </View>
+        ) : (
+          <View style={styles.listSection}>
+            <Text style={styles.sectionTitle}>VENUE LOCATIONS</Text>
+            <Text style={styles.sectionSubtitle}>
+              Explore all event venues and facilities
+            </Text>
+            
+            <View style={styles.locationsList}>
+              {VENUE_LOCATIONS.map((location) => (
+                <TouchableOpacity
+                  key={location.id}
+                  style={styles.locationCard}
+                  onPress={() => handleLocationPress(location)}
+                >
+                  <View style={styles.locationCardHeader}>
+                    <Text style={styles.locationCardTitle}>{location.name}</Text>
+                    <Ionicons name="chevron-forward" size={20} color="#ffd700" />
+                  </View>
+                  <Text style={styles.locationCardDescription}>
+                    {location.description}
+                  </Text>
                 </TouchableOpacity>
-              </>
-            )}
+              ))}
+            </View>
+          </View>
+        )}
+        
+        {/* Amenities Section */}
+        <View style={styles.amenitiesSection}>
+          <Text style={styles.sectionTitle}>AMENITIES & SERVICES</Text>
+          
+          <View style={styles.amenitiesGrid}>
+            <View style={styles.amenityItem}>
+              <View style={styles.amenityIconContainer}>
+                <Ionicons name="restaurant" size={20} color="#ffd700" />
+              </View>
+              <Text style={styles.amenityText}>Restaurants</Text>
+            </View>
+            
+            <View style={styles.amenityItem}>
+              <View style={styles.amenityIconContainer}>
+                <Ionicons name="cafe" size={20} color="#ffd700" />
+              </View>
+              <Text style={styles.amenityText}>Coffee Shops</Text>
+            </View>
+            
+            <View style={styles.amenityItem}>
+              <View style={styles.amenityIconContainer}>
+                <Ionicons name="medkit" size={20} color="#ffd700" />
+              </View>
+              <Text style={styles.amenityText}>First Aid</Text>
+            </View>
+            
+            <View style={styles.amenityItem}>
+              <View style={styles.amenityIconContainer}>
+                <Ionicons name="wifi" size={20} color="#ffd700" />
+              </View>
+              <Text style={styles.amenityText}>Free WiFi</Text>
+            </View>
+            
+            <View style={styles.amenityItem}>
+              <View style={styles.amenityIconContainer}>
+                <Ionicons name="cash" size={20} color="#ffd700" />
+              </View>
+              <Text style={styles.amenityText}>ATMs</Text>
+            </View>
+            
+            <View style={styles.amenityItem}>
+              <View style={styles.amenityIconContainer}>
+                <Ionicons name="car" size={20} color="#ffd700" />
+              </View>
+              <Text style={styles.amenityText}>Parking</Text>
+            </View>
           </View>
         </View>
-      </Modal>
-    </ScrollView>
+      </ScrollView>
+      
+      {/* Location Details Modal */}
+      {selectedLocation && (
+        <View style={styles.locationDetailContainer}>
+          <LinearGradient
+            colors={['#2a2a2a', '#333']}
+            style={styles.locationDetailCard}
+          >
+            <View style={styles.locationDetailHeader}>
+              <Text style={styles.locationDetailTitle}>{selectedLocation.name}</Text>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={handleCloseLocationDetails}
+              >
+                <Ionicons name="close" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+            
+            <Text style={styles.locationDetailDescription}>
+              {selectedLocation.description}
+            </Text>
+            
+            <View style={styles.locationActions}>
+              <TouchableOpacity style={styles.locationAction}>
+                <Ionicons name="navigate" size={20} color="#ffd700" />
+                <Text style={styles.locationActionText}>Get Directions</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.locationAction}>
+                <Ionicons name="information-circle" size={20} color="#ffd700" />
+                <Text style={styles.locationActionText}>More Info</Text>
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
+        </View>
+      )}
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a1a',
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+  },
+  tab: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  activeTab: {
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    borderWidth: 1,
+    borderColor: '#ffd700',
+  },
+  tabText: {
+    color: 'white',
+    marginLeft: 6,
+    fontSize: 14,
+  },
+  activeTabText: {
+    color: '#ffd700',
+    fontWeight: 'bold',
   },
   content: {
+    flex: 1,
     padding: 16,
-    paddingBottom: 40,
   },
-  title: {
-    fontSize: 24,
+  sectionTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#ffd700',
-    textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 5,
   },
-  subtitle: {
-    fontSize: 16,
-    color: 'white',
-    textAlign: 'center',
+  sectionSubtitle: {
+    fontSize: 14,
+    color: '#a0a0a0',
     marginBottom: 20,
   },
+  mapSection: {
+    marginBottom: 30,
+  },
   mapContainer: {
-    backgroundColor: '#222',
-    borderRadius: 12,
+    width: MAP_WIDTH,
+    height: MAP_HEIGHT,
+    borderRadius: 10,
     overflow: 'hidden',
-    marginBottom: 24,
+    marginBottom: 20,
+  },
+  mapPlaceholder: {
+    width: '100%',
+    height: '100%',
   },
   mapBackground: {
-    height: 400,
     width: '100%',
-    position: 'relative',
-    backgroundColor: '#122d4d',
-  },
-  mapDecor: {
-    position: 'absolute',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-  },
-  mapDecor1: {
-    top: '25%',
-    left: '25%',
-    width: '50%',
-    height: '25%',
-    backgroundColor: 'rgba(46, 92, 174, 0.3)',
-  },
-  mapDecor2: {
-    bottom: '33%',
-    right: '25%',
-    width: '33%',
-    height: '16%',
-    backgroundColor: 'rgba(30, 82, 142, 0.2)',
-  },
-  mapDecor3: {
-    top: '50%',
-    left: '33%',
-    width: '33%',
-    height: '20%',
-    backgroundColor: 'rgba(31, 91, 164, 0.2)',
-  },
-  mapDecor4: {
-    bottom: '25%',
-    left: '25%',
-    width: '50%',
-    height: '16%',
-    backgroundColor: 'rgba(30, 70, 130, 0.3)',
-  },
-  locationPin: {
-    position: 'absolute',
+    height: '100%',
+    justifyContent: 'center',
     alignItems: 'center',
-    transform: [{ translateX: -15 }, { translateY: -30 }],
+    position: 'relative',
   },
-  selectedPin: {
-    transform: [{ scale: 1.2 }],
+  mapPlaceholderText: {
+    color: '#666',
+    fontSize: 16,
   },
-  pinLabel: {
-    color: 'white',
-    fontSize: 10,
-    marginTop: -5,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-    borderRadius: 4,
-    width: 80,
-    textAlign: 'center',
-  },
-  mapLegend: {
+  locationMarker: {
     position: 'absolute',
-    bottom: 10,
-    right: 10,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    borderRadius: 6,
-    padding: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255, 215, 0, 0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    transform: [{ translateX: -10 }, { translateY: -10 }],
+  },
+  selectedMarker: {
+    backgroundColor: 'rgba(255, 215, 0, 0.6)',
+    width: 24,
+    height: 24,
+    transform: [{ translateX: -12 }, { translateY: -12 }],
+  },
+  markerDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#ffd700',
+  },
+  legendContainer: {
+    marginBottom: 20,
+  },
+  legendTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 10,
+  },
+  legend: {
+    backgroundColor: '#2a2a2a',
+    borderRadius: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#444',
   },
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 2,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
   },
-  legendIcon: {
-    marginRight: 4,
+  selectedLegendItem: {
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+  },
+  legendDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#ffd700',
+    marginRight: 10,
+  },
+  selectedLegendDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
   },
   legendText: {
     color: 'white',
-    fontSize: 12,
-  },
-  legendNote: {
-    color: '#aaa',
-    fontSize: 10,
-  },
-  directoryContainer: {
-    backgroundColor: '#222',
-    borderRadius: 12,
-    padding: 16,
-  },
-  directoryTitle: {
-    color: '#ffd700',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  directoryItem: {
-    flexDirection: 'row',
-    marginBottom: 16,
-  },
-  directoryIcon: {
-    marginTop: 2,
-    marginRight: 10,
-  },
-  directoryTextContainer: {
-    flex: 1,
-  },
-  directoryItemName: {
-    color: 'white',
-    fontWeight: 'bold',
-    marginBottom: 2,
-  },
-  directoryItemDesc: {
-    color: '#aaa',
     fontSize: 14,
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.8)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  modalContent: {
-    backgroundColor: '#222',
-    borderRadius: 12,
-    padding: 20,
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#ffd700',
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    padding: 5,
-  },
-  modalTitle: {
+  selectedLegendText: {
     color: '#ffd700',
-    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
   },
-  modalDescription: {
-    color: 'white',
-    fontSize: 16,
+  listSection: {
+    marginBottom: 30,
+  },
+  locationsList: {
     marginBottom: 20,
   },
-  closeModalButton: {
+  locationCard: {
+    backgroundColor: '#2a2a2a',
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#444',
+  },
+  locationCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  locationCardTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffd700',
+  },
+  locationCardDescription: {
+    fontSize: 14,
+    color: 'white',
+    lineHeight: 20,
+  },
+  amenitiesSection: {
+    marginBottom: 30,
+  },
+  amenitiesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  amenityItem: {
+    width: '30%',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  amenityIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  amenityText: {
+    color: 'white',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  locationDetailContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 16,
+    backgroundColor: 'rgba(26, 26, 26, 0.9)',
+  },
+  locationDetailCard: {
+    borderRadius: 10,
+    padding: 16,
     borderWidth: 1,
     borderColor: '#ffd700',
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    alignSelf: 'flex-end',
   },
-  closeModalButtonText: {
-    color: '#ffd700',
+  locationDetailHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  locationDetailTitle: {
+    fontSize: 18,
     fontWeight: 'bold',
+    color: '#ffd700',
+  },
+  closeButton: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  locationDetailDescription: {
+    fontSize: 14,
+    color: 'white',
+    lineHeight: 20,
+    marginBottom: 15,
+  },
+  locationActions: {
+    flexDirection: 'row',
+  },
+  locationAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  locationActionText: {
+    color: '#ffd700',
+    marginLeft: 6,
+    fontSize: 14,
   },
 });
 

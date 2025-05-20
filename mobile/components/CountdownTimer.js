@@ -3,80 +3,62 @@ import { View, Text, StyleSheet } from 'react-native';
 import { EVENT_START_DATE } from '../constants';
 
 const CountdownTimer = () => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
+  const [days, setDays] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      const difference = +EVENT_START_DATE - +new Date();
-      let timeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const eventTime = EVENT_START_DATE.getTime();
+      const timeRemaining = eventTime - now;
 
-      if (difference > 0) {
-        timeLeft = {
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000)
-        };
+      if (timeRemaining > 0) {
+        // Calculate time units
+        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        // Update state
+        setDays(days);
+        setHours(hours);
+        setMinutes(minutes);
+        setSeconds(seconds);
+      } else {
+        // Event has started
+        setDays(0);
+        setHours(0);
+        setMinutes(0);
+        setSeconds(0);
       }
-
-      return timeLeft;
-    };
-
-    // Initial calculation
-    setTimeLeft(calculateTimeLeft());
-
-    // Update timer every second
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
     }, 1000);
 
-    // Cleanup interval on component unmount
-    return () => clearInterval(timer);
+    // Cleanup on unmount
+    return () => clearInterval(interval);
   }, []);
-
-  // Pad numbers with leading zeros
-  const padWithZero = (num) => {
-    return num.toString().padStart(2, '0');
-  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Event Countdown</Text>
-      <View style={styles.timerContainer}>
-        {/* Days */}
-        <View style={styles.timeUnit}>
-          <View style={styles.timeBox}>
-            <Text style={styles.timeValue}>{padWithZero(timeLeft.days)}</Text>
-          </View>
+      <View style={styles.timeContainer}>
+        <View style={styles.timeBlock}>
+          <Text style={styles.timeNumber}>{days}</Text>
           <Text style={styles.timeLabel}>DAYS</Text>
         </View>
-
-        {/* Hours */}
-        <View style={styles.timeUnit}>
-          <View style={styles.timeBox}>
-            <Text style={styles.timeValue}>{padWithZero(timeLeft.hours)}</Text>
-          </View>
+        <Text style={styles.timeSeparator}>:</Text>
+        <View style={styles.timeBlock}>
+          <Text style={styles.timeNumber}>{hours}</Text>
           <Text style={styles.timeLabel}>HOURS</Text>
         </View>
-
-        {/* Minutes */}
-        <View style={styles.timeUnit}>
-          <View style={styles.timeBox}>
-            <Text style={styles.timeValue}>{padWithZero(timeLeft.minutes)}</Text>
-          </View>
+        <Text style={styles.timeSeparator}>:</Text>
+        <View style={styles.timeBlock}>
+          <Text style={styles.timeNumber}>{minutes}</Text>
           <Text style={styles.timeLabel}>MINS</Text>
         </View>
-
-        {/* Seconds */}
-        <View style={styles.timeUnit}>
-          <View style={styles.timeBox}>
-            <Text style={styles.timeValue}>{padWithZero(timeLeft.seconds)}</Text>
-          </View>
+        <Text style={styles.timeSeparator}>:</Text>
+        <View style={styles.timeBlock}>
+          <Text style={styles.timeNumber}>{seconds}</Text>
           <Text style={styles.timeLabel}>SECS</Text>
         </View>
       </View>
@@ -86,44 +68,33 @@ const CountdownTimer = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    marginBottom: 30,
+    alignItems: 'center',
   },
-  title: {
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  timerContainer: {
+  timeContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
+  },
+  timeBlock: {
     alignItems: 'center',
   },
-  timeUnit: {
-    alignItems: 'center',
-    marginHorizontal: 5,
-  },
-  timeBox: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderWidth: 1,
-    borderColor: '#ffd700',
-    borderRadius: 4,
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  timeValue: {
-    fontSize: 24,
+  timeNumber: {
+    fontSize: 40,
     fontWeight: 'bold',
     color: '#ffd700',
+    minWidth: 60,
+    textAlign: 'center',
   },
   timeLabel: {
-    fontSize: 12,
-    color: 'white',
-    marginTop: 4,
-  }
+    fontSize: 14,
+    color: '#a0a0a0',
+    marginTop: 5,
+  },
+  timeSeparator: {
+    fontSize: 40,
+    color: '#ffd700',
+    marginHorizontal: 5,
+  },
 });
 
 export default CountdownTimer;

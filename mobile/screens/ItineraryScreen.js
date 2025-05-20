@@ -1,301 +1,431 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions
-} from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 
-// Mock data for events
-const eventsByDay = {
-  "1": [
-    {
-      id: 1,
-      title: "Opening Ceremony",
-      description: "Welcome to the World Tournament Slots",
-      startTime: new Date("2025-10-22T10:00:00"),
-      endTime: new Date("2025-10-22T11:30:00"),
-      location: "Grand Ballroom"
-    },
-    {
-      id: 2,
-      title: "Qualifying Round 1",
-      description: "First round of qualifying tournaments",
-      startTime: new Date("2025-10-22T13:00:00"),
-      endTime: new Date("2025-10-22T17:00:00"),
-      location: "Casino Floor"
-    },
-    {
-      id: 3,
-      title: "Welcome Dinner",
-      description: "Networking dinner for all participants",
-      startTime: new Date("2025-10-22T19:00:00"),
-      endTime: new Date("2025-10-22T22:00:00"),
-      location: "Poseidon Restaurant"
-    }
-  ],
-  "2": [
-    {
-      id: 4,
-      title: "Qualifying Round 2",
-      description: "Second round of qualifying tournaments",
-      startTime: new Date("2025-10-23T10:00:00"),
-      endTime: new Date("2025-10-23T14:00:00"),
-      location: "Casino Floor"
-    }
-  ],
-  "3": [
-    {
-      id: 5,
-      title: "Semi-Finals",
-      description: "Semi-final tournaments",
-      startTime: new Date("2025-10-24T10:00:00"),
-      endTime: new Date("2025-10-24T16:00:00"),
-      location: "VIP Lounge"
-    }
-  ],
-  "4": [
-    {
-      id: 6,
-      title: "Grand Finals",
-      description: "Championship round with top players",
-      startTime: new Date("2025-10-25T14:00:00"),
-      endTime: new Date("2025-10-25T18:00:00"),
-      location: "Royal Arena"
-    },
-    {
-      id: 7,
-      title: "Awards Ceremony",
-      description: "Celebration and prize distribution",
-      startTime: new Date("2025-10-25T20:00:00"),
-      endTime: new Date("2025-10-25T22:00:00"),
-      location: "Grand Ballroom"
-    }
-  ],
-  "5": [
-    {
-      id: 8,
-      title: "Farewell Brunch",
-      description: "Final gathering before departure",
-      startTime: new Date("2025-10-26T10:00:00"),
-      endTime: new Date("2025-10-26T12:00:00"),
-      location: "Azure Terrace"
-    }
-  ]
-};
-
-// Generate day labels
-const dayLabels = {
-  "1": "Day 1 (Oct 22)",
-  "2": "Day 2 (Oct 23)",
-  "3": "Day 3 (Oct 24)",
-  "4": "Day 4 (Oct 25)",
-  "5": "Day 5 (Oct 26)",
-};
+// Sample event data - in a real app this would come from an API
+const eventDays = [
+  {
+    day: 1,
+    date: 'Oct 22, 2025',
+    events: [
+      {
+        id: 1,
+        title: 'Welcome Reception',
+        time: '6:00 PM - 8:00 PM',
+        location: 'Grand Ballroom',
+        description: 'Join us for welcome drinks and appetizers as we kick off the World Tournament Slots event.'
+      },
+      {
+        id: 2,
+        title: 'Registration Opens',
+        time: '4:00 PM - 9:00 PM',
+        location: 'Main Tournament Hall',
+        description: 'Check in and pick up your event credentials, schedules, and welcome package.'
+      },
+      {
+        id: 3,
+        title: 'VIP Dinner',
+        time: '8:30 PM - 10:30 PM',
+        location: 'Poseidon Restaurant',
+        description: 'Exclusive dinner for VIP package holders with special guest appearances.'
+      }
+    ]
+  },
+  {
+    day: 2,
+    date: 'Oct 23, 2025',
+    events: [
+      {
+        id: 4,
+        title: 'Morning Tournaments',
+        time: '10:00 AM - 2:00 PM',
+        location: 'Main Tournament Hall',
+        description: 'Multiple tournaments with varying buy-ins and prize pools.'
+      },
+      {
+        id: 5,
+        title: 'Strategy Workshop',
+        time: '2:30 PM - 4:00 PM',
+        location: 'Conference Room B',
+        description: 'Learn advanced strategies from professional players and experts.'
+      },
+      {
+        id: 6,
+        title: 'Evening Tournaments',
+        time: '5:00 PM - 9:00 PM',
+        location: 'Main Tournament Hall',
+        description: 'High stakes tournaments with guaranteed prize pools.'
+      },
+      {
+        id: 7,
+        title: 'Networking Mixer',
+        time: '9:30 PM - 11:30 PM',
+        location: 'Poolside Lounge',
+        description: 'Meet and mingle with fellow players and industry professionals.'
+      }
+    ]
+  },
+  {
+    day: 3,
+    date: 'Oct 24, 2025',
+    events: [
+      {
+        id: 8,
+        title: 'Main Event Day 1',
+        time: '12:00 PM - 8:00 PM',
+        location: 'Main Tournament Hall',
+        description: 'The first day of our signature tournament with a $1M guaranteed prize pool.'
+      },
+      {
+        id: 9,
+        title: 'Celebrity Challenge',
+        time: '3:00 PM - 5:00 PM',
+        location: 'VIP Lounge',
+        description: 'Watch celebrities compete in a special exhibition tournament.'
+      },
+      {
+        id: 10,
+        title: 'After-Hours Party',
+        time: '10:00 PM - 1:00 AM',
+        location: 'AURA Nightclub',
+        description: 'Exclusive party for tournament participants with live entertainment.'
+      }
+    ]
+  },
+  {
+    day: 4,
+    date: 'Oct 25, 2025',
+    events: [
+      {
+        id: 11,
+        title: 'Main Event Day 2',
+        time: '12:00 PM - 8:00 PM',
+        location: 'Main Tournament Hall',
+        description: 'The second day of our signature tournament as we narrow down to the final table.'
+      },
+      {
+        id: 12,
+        title: 'Guest Speaker Series',
+        time: '10:00 AM - 11:30 AM',
+        location: 'Conference Room A',
+        description: 'Industry leaders discuss the future of gaming and casino entertainment.'
+      },
+      {
+        id: 13,
+        title: 'Beach Volleyball Tournament',
+        time: '2:00 PM - 4:00 PM',
+        location: 'Paradise Beach',
+        description: 'Fun recreational activity for players and guests.'
+      }
+    ]
+  },
+  {
+    day: 5,
+    date: 'Oct 26, 2025',
+    events: [
+      {
+        id: 14,
+        title: 'Final Table',
+        time: '2:00 PM - 6:00 PM',
+        location: 'Main Tournament Hall',
+        description: 'The exciting conclusion of our main event with the final players competing for the championship.'
+      },
+      {
+        id: 15,
+        title: 'Awards Ceremony',
+        time: '7:00 PM - 8:30 PM',
+        location: 'Grand Ballroom',
+        description: 'Celebration and awards presentation for tournament winners and special recognitions.'
+      },
+      {
+        id: 16,
+        title: 'Farewell Reception',
+        time: '8:30 PM - 10:30 PM',
+        location: 'Poolside Terrace',
+        description: 'Join us for a final evening of networking and celebration as we conclude this year's event.'
+      }
+    ]
+  }
+];
 
 const ItineraryScreen = () => {
-  const [activeDay, setActiveDay] = useState("1");
+  const [selectedDay, setSelectedDay] = useState(1);
+  const [expandedEvent, setExpandedEvent] = useState(null);
   
-  const formatTime = (date) => {
-    return date.toLocaleTimeString('en-US', { 
-      hour: 'numeric', 
-      minute: '2-digit', 
-      hour12: true 
-    });
+  const toggleEventExpansion = (eventId) => {
+    if (expandedEvent === eventId) {
+      setExpandedEvent(null);
+    } else {
+      setExpandedEvent(eventId);
+    }
   };
+  
+  const renderEvent = ({ item }) => (
+    <TouchableOpacity
+      style={styles.eventCard}
+      onPress={() => toggleEventExpansion(item.id)}
+    >
+      <View style={styles.eventHeader}>
+        <View>
+          <Text style={styles.eventTitle}>{item.title}</Text>
+          <Text style={styles.eventTime}>{item.time}</Text>
+          <Text style={styles.eventLocation}>
+            <Ionicons name="location" size={14} color="#a0a0a0" /> {item.location}
+          </Text>
+        </View>
+        <Ionicons
+          name={expandedEvent === item.id ? "chevron-up" : "chevron-down"}
+          size={24}
+          color="#ffd700"
+        />
+      </View>
+      
+      {expandedEvent === item.id && (
+        <View style={styles.eventDetails}>
+          <View style={styles.divider} />
+          <Text style={styles.eventDescription}>{item.description}</Text>
+          <View style={styles.eventActions}>
+            <TouchableOpacity style={styles.eventAction}>
+              <Ionicons name="calendar" size={20} color="#ffd700" />
+              <Text style={styles.eventActionText}>Add to Calendar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.eventAction}>
+              <Ionicons name="notifications" size={20} color="#ffd700" />
+              <Text style={styles.eventActionText}>Set Reminder</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    </TouchableOpacity>
+  );
 
   return (
-    <View style={styles.container}>
-      {/* Day tabs */}
-      <ScrollView 
-        horizontal 
-        showsHorizontalScrollIndicator={false}
-        style={styles.tabsContainer}
-        contentContainerStyle={styles.tabsContent}
-      >
-        {Object.keys(eventsByDay).map((day) => (
-          <TouchableOpacity
-            key={day}
-            style={[
-              styles.tab,
-              activeDay === day ? styles.activeTab : null
-            ]}
-            onPress={() => setActiveDay(day)}
-          >
-            <Text 
+    <LinearGradient
+      colors={['#1a1a1a', '#2a2a2a', '#1a1a1a']}
+      style={styles.container}
+    >
+      <View style={styles.content}>
+        {/* Days Selector */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.daysScrollView}
+          contentContainerStyle={styles.daysContainer}
+        >
+          {eventDays.map((dayData) => (
+            <TouchableOpacity
+              key={dayData.day}
               style={[
-                styles.tabText,
-                activeDay === day ? styles.activeTabText : null
+                styles.dayButton,
+                selectedDay === dayData.day && styles.selectedDayButton
               ]}
+              onPress={() => setSelectedDay(dayData.day)}
             >
-              {dayLabels[day]}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-      
-      {/* Event list */}
-      <ScrollView style={styles.eventListContainer}>
-        <View style={styles.eventsList}>
-          {eventsByDay[activeDay].map((event, index) => (
-            <View key={event.id} style={styles.eventCard}>
-              {/* Time indicator */}
-              <View style={styles.timeContainer}>
-                <MaterialIcons name="access-time" size={16} color="#ffd700" style={styles.timeIcon} />
-                <Text style={styles.timeText}>
-                  {formatTime(event.startTime)}
-                  {event.endTime && ` - ${formatTime(event.endTime)}`}
-                </Text>
-              </View>
-              
-              {/* Event details */}
-              <View style={styles.eventDetails}>
-                <Text style={styles.eventTitle}>{event.title}</Text>
-                {event.description && (
-                  <Text style={styles.eventDescription}>{event.description}</Text>
-                )}
-                {event.location && (
-                  <View style={styles.locationContainer}>
-                    <MaterialIcons name="location-on" size={14} color="#ffd700" style={styles.locationIcon} />
-                    <Text style={styles.locationText}>{event.location}</Text>
-                  </View>
-                )}
-              </View>
-            </View>
+              <Text
+                style={[
+                  styles.dayButtonText,
+                  selectedDay === dayData.day && styles.selectedDayText
+                ]}
+              >
+                DAY {dayData.day}
+              </Text>
+              <Text
+                style={[
+                  styles.dayDateText,
+                  selectedDay === dayData.day && styles.selectedDayText
+                ]}
+              >
+                {dayData.date}
+              </Text>
+            </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
         
-        {/* Legend */}
-        <View style={styles.legend}>
-          <Text style={styles.legendTitle}>Schedule Notes</Text>
-          <View style={styles.legendItem}>
-            <Text style={styles.legendBullet}>•</Text>
-            <Text style={styles.legendText}>All times are in local Bahamas time (EDT)</Text>
+        {/* Events List */}
+        <View style={styles.eventsContainer}>
+          <View style={styles.dayHeader}>
+            <Text style={styles.dayTitle}>DAY {selectedDay} SCHEDULE</Text>
+            <Text style={styles.dayDate}>
+              {eventDays.find(day => day.day === selectedDay)?.date}
+            </Text>
           </View>
-          <View style={styles.legendItem}>
-            <Text style={styles.legendBullet}>•</Text>
-            <Text style={styles.legendText}>Schedule may be subject to change</Text>
-          </View>
-          <View style={styles.legendItem}>
-            <Text style={styles.legendBullet}>•</Text>
-            <Text style={styles.legendText}>VIP badge required for certain events</Text>
-          </View>
+          
+          <FlatList
+            data={eventDays.find(day => day.day === selectedDay)?.events}
+            renderItem={renderEvent}
+            keyExtractor={item => item.id.toString()}
+            contentContainerStyle={styles.eventsList}
+            showsVerticalScrollIndicator={false}
+          />
         </View>
-      </ScrollView>
-    </View>
+      </View>
+      
+      {/* Quick Filter Bar */}
+      <View style={styles.filterBar}>
+        <TouchableOpacity style={styles.filterButton}>
+          <Ionicons name="funnel" size={16} color="#ffd700" />
+          <Text style={styles.filterButtonText}>All Events</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.filterButton}>
+          <Ionicons name="trophy" size={16} color="#ffd700" />
+          <Text style={styles.filterButtonText}>Tournaments</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.filterButton}>
+          <Ionicons name="restaurant" size={16} color="#ffd700" />
+          <Text style={styles.filterButtonText}>Social</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.filterButton}>
+          <Ionicons name="star" size={16} color="#ffd700" />
+          <Text style={styles.filterButtonText}>VIP</Text>
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a1a',
   },
-  tabsContainer: {
-    maxHeight: 50,
-    backgroundColor: '#222',
+  content: {
+    flex: 1,
+    padding: 16,
   },
-  tabsContent: {
-    paddingHorizontal: 10,
+  daysScrollView: {
+    maxHeight: 80,
   },
-  tab: {
+  daysContainer: {
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+  },
+  dayButton: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    marginRight: 4,
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
+    borderRadius: 25,
+    marginHorizontal: 6,
+    backgroundColor: '#2a2a2a',
+    borderWidth: 1,
+    borderColor: '#444',
+    minWidth: 100,
+    alignItems: 'center',
   },
-  activeTab: {
-    borderBottomColor: '#ffd700',
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+  selectedDayButton: {
+    backgroundColor: 'rgba(255, 215, 0, 0.15)',
+    borderColor: '#ffd700',
   },
-  tabText: {
+  dayButtonText: {
     color: 'white',
-    fontWeight: '500',
-  },
-  activeTabText: {
-    color: '#ffd700',
     fontWeight: 'bold',
+    fontSize: 14,
   },
-  eventListContainer: {
+  dayDateText: {
+    color: '#a0a0a0',
+    fontSize: 12,
+    marginTop: 2,
+  },
+  selectedDayText: {
+    color: '#ffd700',
+  },
+  eventsContainer: {
     flex: 1,
+    marginTop: 20,
+  },
+  dayHeader: {
+    marginBottom: 15,
+  },
+  dayTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#ffd700',
+  },
+  dayDate: {
+    fontSize: 16,
+    color: 'white',
+    marginTop: 5,
   },
   eventsList: {
-    padding: 16,
+    paddingBottom: 80, // Extra padding to account for the filter bar
   },
   eventCard: {
-    backgroundColor: '#222',
-    borderRadius: 8,
-    marginBottom: 16,
-    overflow: 'hidden',
+    backgroundColor: '#2a2a2a',
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#444',
   },
-  timeContainer: {
+  eventHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#333',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  timeIcon: {
-    marginRight: 6,
-  },
-  timeText: {
-    color: '#ffd700',
-    fontWeight: '600',
-  },
-  eventDetails: {
-    padding: 12,
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
   eventTitle: {
-    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 4,
+    color: 'white',
+    marginBottom: 5,
+  },
+  eventTime: {
+    fontSize: 14,
+    color: '#ffd700',
+    marginBottom: 5,
+  },
+  eventLocation: {
+    fontSize: 14,
+    color: '#a0a0a0',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#444',
+    marginVertical: 12,
+  },
+  eventDetails: {
+    marginTop: 8,
   },
   eventDescription: {
-    color: '#bbb',
-    marginBottom: 8,
-  },
-  locationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  locationIcon: {
-    marginRight: 4,
-  },
-  locationText: {
-    color: '#ffd700',
     fontSize: 14,
-  },
-  legend: {
-    backgroundColor: '#222',
-    padding: 16,
-    borderRadius: 8,
-    margin: 16,
-    marginTop: 0,
-  },
-  legendTitle: {
-    color: '#ffd700',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  legendBullet: {
-    color: '#ffd700',
-    marginRight: 8,
-    fontSize: 16,
-  },
-  legendText: {
     color: 'white',
+    lineHeight: 20,
+  },
+  eventActions: {
+    flexDirection: 'row',
+    marginTop: 15,
+  },
+  eventAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  eventActionText: {
+    color: '#ffd700',
+    marginLeft: 6,
     fontSize: 14,
+  },
+  filterBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#1a1a1a',
+    borderTopWidth: 1,
+    borderTopColor: '#333',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 12,
+  },
+  filterButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+  },
+  filterButtonText: {
+    color: 'white',
+    marginLeft: 6,
+    fontSize: 12,
   },
 });
 

@@ -20,10 +20,17 @@ function Router() {
   useEffect(() => {
     // Skip loading screen during development for faster testing
     // In production, this would be true
-    const shouldShowLoadingScreen = true;
+    const shouldShowLoadingScreen = false; // Changed to false to skip loading screen
     
     if (!shouldShowLoadingScreen) {
       setShowLoadingScreen(false);
+    } else {
+      // Auto-transition after loading screen displays
+      const timer = setTimeout(() => {
+        setShowLoadingScreen(false);
+      }, 4000);
+      
+      return () => clearTimeout(timer);
     }
     
     // Add meta viewport tag to ensure mobile-first display

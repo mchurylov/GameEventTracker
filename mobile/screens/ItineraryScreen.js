@@ -143,7 +143,7 @@ const eventDays = [
         title: 'Farewell Reception',
         time: '8:30 PM - 10:30 PM',
         location: 'Poolside Terrace',
-        description: 'Join us for a final evening of networking and celebration as we conclude this year's event.'
+        description: 'Join us for a final evening of networking and celebration as we conclude the event.'
       }
     ]
   }

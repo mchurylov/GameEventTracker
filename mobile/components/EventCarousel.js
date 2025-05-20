@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { CAROUSEL_SLIDES } from '../constants';
+import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width - 40;
@@ -28,7 +29,7 @@ const EventCarousel = () => {
 
   return (
     <View style={styles.container}>
-      <View 
+      <ScrollView 
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
@@ -43,6 +44,9 @@ const EventCarousel = () => {
               colors={['rgba(26, 26, 26, 0.7)', 'rgba(26, 26, 26, 0.9)']}
               style={styles.imageOverlay}
             />
+            <View style={styles.iconContainer}>
+              <Ionicons name="trophy" size={40} color="#ffd700" />
+            </View>
             <View style={styles.textContainer}>
               <Text style={styles.subtitle}>{slide.subtitle}</Text>
               <Text style={styles.title}>{slide.title}</Text>
@@ -50,7 +54,7 @@ const EventCarousel = () => {
             </View>
           </View>
         ))}
-      </View>
+      </ScrollView>
       
       <View style={styles.pagination}>
         {CAROUSEL_SLIDES.map((_, index) => (

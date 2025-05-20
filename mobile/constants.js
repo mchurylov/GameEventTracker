@@ -13,7 +13,6 @@ export const CAROUSEL_SLIDES = [
     title: "World Tournament Slots",
     subtitle: "The Premier Gaming Event",
     description: "Join us for 5 days of high-stakes competition and entertainment",
-    image: require('./assets/carousel1.png'),
     icon: "trophy"
   },
   {
@@ -21,7 +20,6 @@ export const CAROUSEL_SLIDES = [
     title: "Luxury Accommodations",
     subtitle: "At Atlantis Resort",
     description: "Experience paradise with VIP access to all resort amenities",
-    image: require('./assets/carousel2.png'),
     icon: "bed"
   },
   {
@@ -29,7 +27,6 @@ export const CAROUSEL_SLIDES = [
     title: "$5 Million Prize Pool",
     subtitle: "Daily Tournaments",
     description: "Compete for life-changing prizes in our signature events",
-    image: require('./assets/carousel3.png'),
     icon: "cash"
   },
   {
@@ -37,7 +34,6 @@ export const CAROUSEL_SLIDES = [
     title: "Celebrity Appearances",
     subtitle: "Meet & Greet Events",
     description: "Meet your favorite gaming celebrities and industry icons",
-    image: require('./assets/carousel4.png'),
     icon: "people"
   },
 ];

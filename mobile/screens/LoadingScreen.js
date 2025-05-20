@@ -12,11 +12,9 @@ const LoadingScreen = () => {
     >
       <View style={styles.logoContainer}>
         <Text style={styles.title}>{EVENT_NAME}</Text>
-        <Image 
-          source={require('../assets/icon.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <View style={styles.logo}>
+          <Text style={styles.logoText}>WTS</Text>
+        </View>
       </View>
       
       <View style={styles.infoContainer}>
@@ -52,6 +50,17 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginTop: 20,
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#ffd700',
+  },
+  logoText: {
+    fontSize: 60,
+    fontWeight: 'bold',
+    color: '#ffd700',
   },
   title: {
     fontSize: 32,

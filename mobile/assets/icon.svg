@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024px" height="1024px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1024" height="1024" fill="#1a1a1a" />
+  
+  <!-- Diamond shape background -->
+  <polygon points="512,100 900,512 512,924 124,512" 
+           fill="none" stroke="#ffd700" stroke-width="16" />
+  
+  <!-- Text elements -->
+  <g text-anchor="middle">
+    <text x="512" y="400" font-family="Arial, sans-serif" font-weight="bold" font-size="120" fill="#ffd700">WORLD</text>
+    <text x="512" y="500" font-family="Arial, sans-serif" font-weight="bold" font-size="80" fill="white">TOURNAMENT</text>
+    <text x="512" y="650" font-family="Arial, sans-serif" font-weight="bold" font-size="140" fill="#ffd700">SLOTS</text>
+  </g>
+  
+  <!-- Diamond accent marks -->
+  <polygon points="300,512 330,482 360,512 330,542" fill="#ffd700" />
+  <polygon points="724,512 754,482 784,512 754,542" fill="#ffd700" />
+</svg>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View } from 'react-native';
 
 // Import screens
 import LoadingScreen from './screens/LoadingScreen';
@@ -13,20 +13,29 @@ import SignupScreen from './screens/SignupScreen';
 import PromotionsScreen from './screens/PromotionsScreen';
 import ItineraryScreen from './screens/ItineraryScreen';
 import VenueMapScreen from './screens/VenueMapScreen';
-
-// Constants
 import { EVENT_START_DATE } from './constants';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPhase, setCurrentPhase] = useState(1); // Phase 1 is Marketing App, Phase 2 is Event App
 
-  // Show loading screen for a few seconds
   useEffect(() => {
+    // Simulate loading time
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
+
+    // Determine if we're in Phase 1 (Marketing App) or Phase 2 (Event App)
+    // Phase 2 is active when we're within 14 days of the event
+    const now = new Date();
+    const timeDiff = EVENT_START_DATE - now;
+    const daysToEvent = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    
+    if (daysToEvent <= 14) {
+      setCurrentPhase(2);
+    }
 
     return () => clearTimeout(timer);
   }, []);
@@ -36,9 +45,9 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <StatusBar style="light" />
+    <NavigationContainer>
+      <StatusBar style="light" />
+      {currentPhase === 1 ? (
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
@@ -46,46 +55,93 @@ export default function App() {
 
               if (route.name === 'Home') {
                 iconName = focused ? 'home' : 'home-outline';
-              } else if (route.name === 'Event') {
-                iconName = focused ? 'calendar' : 'calendar-outline';
-              } else if (route.name === 'Updates') {
-                iconName = focused ? 'mail' : 'mail-outline';
-              } else if (route.name === 'Games') {
-                iconName = focused ? 'game-controller' : 'game-controller-outline';
-              } else if (route.name === 'Schedule') {
-                iconName = focused ? 'time' : 'time-outline';
-              } else if (route.name === 'Map') {
-                iconName = focused ? 'map' : 'map-outline';
+              } else if (route.name === 'Event Details') {
+                iconName = focused ? 'information-circle' : 'information-circle-outline';
+              } else if (route.name === 'Sign Up') {
+                iconName = focused ? 'person-add' : 'person-add-outline';
+              } else if (route.name === 'Promotions') {
+                iconName = focused ? 'gift' : 'gift-outline';
               }
 
               return <Ionicons name={iconName} size={size} color={color} />;
             },
             tabBarActiveTintColor: '#ffd700',
-            tabBarInactiveTintColor: 'gray',
+            tabBarInactiveTintColor: '#a0a0a0',
             tabBarStyle: {
               backgroundColor: '#1a1a1a',
               borderTopColor: '#333',
+              height: 60,
+              paddingBottom: 5,
             },
             headerStyle: {
               backgroundColor: '#1a1a1a',
               borderBottomColor: '#333',
-              borderBottomWidth: 1,
+              height: 90,
             },
-            headerTintColor: '#ffd700',
             headerTitleStyle: {
+              color: '#ffd700',
               fontWeight: 'bold',
             },
           })}
         >
           <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Event" component={EventDetailsScreen} />
-          <Tab.Screen name="Updates" component={SignupScreen} />
-          <Tab.Screen name="Games" component={PromotionsScreen} />
-          {/* Phase 2 navigation items */}
-          <Tab.Screen name="Schedule" component={ItineraryScreen} />
-          <Tab.Screen name="Map" component={VenueMapScreen} />
+          <Tab.Screen name="Event Details" component={EventDetailsScreen} />
+          <Tab.Screen name="Sign Up" component={SignupScreen} />
+          <Tab.Screen name="Promotions" component={PromotionsScreen} />
         </Tab.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+      ) : (
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+
+              if (route.name === 'Home') {
+                iconName = focused ? 'home' : 'home-outline';
+              } else if (route.name === 'Event Details') {
+                iconName = focused ? 'information-circle' : 'information-circle-outline';
+              } else if (route.name === 'Itinerary') {
+                iconName = focused ? 'calendar' : 'calendar-outline';
+              } else if (route.name === 'Venue Map') {
+                iconName = focused ? 'map' : 'map-outline';
+              } else if (route.name === 'Promotions') {
+                iconName = focused ? 'gift' : 'gift-outline';
+              }
+
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarActiveTintColor: '#ffd700',
+            tabBarInactiveTintColor: '#a0a0a0',
+            tabBarStyle: {
+              backgroundColor: '#1a1a1a',
+              borderTopColor: '#333',
+              height: 60,
+              paddingBottom: 5,
+            },
+            headerStyle: {
+              backgroundColor: '#1a1a1a',
+              borderBottomColor: '#333',
+              height: 90,
+            },
+            headerTitleStyle: {
+              color: '#ffd700',
+              fontWeight: 'bold',
+            },
+          })}
+        >
+          <Tab.Screen name="Home" component={HomeScreen} />
+          <Tab.Screen name="Event Details" component={EventDetailsScreen} />
+          <Tab.Screen name="Itinerary" component={ItineraryScreen} />
+          <Tab.Screen name="Venue Map" component={VenueMapScreen} />
+          <Tab.Screen name="Promotions" component={PromotionsScreen} />
+        </Tab.Navigator>
+      )}
+    </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1a1a',
+  },
+});

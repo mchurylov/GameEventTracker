@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1242px" height="2688px" viewBox="0 0 1242 2688" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1242" height="2688" fill="#1a1a1a" />
+  
+  <!-- Radial gradient overlay -->
+  <radialGradient id="grad" cx="50%" cy="50%" r="70%" fx="50%" fy="50%">
+    <stop offset="0%" stop-color="#333333" stop-opacity="0.3" />
+    <stop offset="100%" stop-color="#1a1a1a" stop-opacity="1" />
+  </radialGradient>
+  <rect width="1242" height="2688" fill="url(#grad)" />
+  
+  <!-- Gold shimmer lines -->
+  <g opacity="0.1">
+    <line x1="0" y1="1344" x2="1242" y2="1344" stroke="#ffd700" stroke-width="400" />
+  </g>
+  
+  <!-- Logo container -->
+  <g transform="translate(621, 1344)">
+    <!-- Diamond shape background -->
+    <polygon points="0,-400 400,0 0,400 -400,0" 
+             fill="none" stroke="#ffd700" stroke-width="10" />
+    
+    <!-- Text elements -->
+    <g text-anchor="middle">
+      <text x="0" y="-150" font-family="Arial, sans-serif" font-weight="bold" font-size="120" fill="#ffd700">WORLD</text>
+      <text x="0" y="-30" font-family="Arial, sans-serif" font-weight="bold" font-size="80" fill="white">TOURNAMENT</text>
+      <text x="0" y="120" font-family="Arial, sans-serif" font-weight="bold" font-size="140" fill="#ffd700">SLOTS</text>
+    </g>
+    
+    <!-- Diamond accent marks -->
+    <polygon points="-200,0 -230,-30 -260,0 -230,30" fill="#ffd700" />
+    <polygon points="200,0 230,-30 260,0 230,30" fill="#ffd700" />
+  </g>
+  
+  <!-- Event details -->
+  <g text-anchor="middle">
+    <text x="621" y="1800" font-family="Arial, sans-serif" font-size="50" fill="white">OCT 22-26, 2025</text>
+    <text x="621" y="1880" font-family="Arial, sans-serif" font-size="50" fill="#ffd700">ATLANTIS, BAHAMAS</text>
+  </g>
+  
+  <!-- Timer countdown -->
+  <g text-anchor="middle">
+    <text x="621" y="2000" font-family="Arial, sans-serif" font-size="40" fill="white">COUNTDOWN TO EVENT</text>
+  </g>
+  
+  <!-- Loading bar -->
+  <rect x="371" y="2100" width="500" height="20" rx="10" ry="10" fill="#333333" />
+  <rect x="371" y="2100" width="500" height="20" rx="10" ry="10" fill="#ffd700">
+    <animate attributeName="width" from="0" to="500" dur="3s" repeatCount="indefinite" />
+  </rect>
+</svg>

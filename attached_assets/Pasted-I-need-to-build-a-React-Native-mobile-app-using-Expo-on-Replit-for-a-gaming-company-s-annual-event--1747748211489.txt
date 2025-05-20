@@ -1,0 +1,27 @@
+I need to build a React Native mobile app using Expo on Replit for a gaming company’s annual event, targeting both iOS and Android. The app has two phases: Phase 1 (Marketing App) and Phase 2 (Event App). Below are the requirements for each phase. The design should mimic the website’s look and feel as shown in the image, with a dark background, gold and white accents, bold typography, and a luxurious theme. Use placeholder assets (e.g., logos, images) for now, which I’ll replace later.
+
+Phase 1: Marketing App (MVP)
+
+Purpose: A lightweight marketing app to promote the event and encourage downloads.
+Features:
+Loading Screen: Display a counter (e.g., "Days until event: 07 11 02") with a luxurious design (gold text, dark background).
+Carousel: A horizontal carousel showcasing event highlights (e.g., "Welcome to Atlantis," "Event Details") with images and text. Use placeholder images.
+Get Updates Signup: A form with fields for name and email, styled with a gold "Submit" button. On submission, show an alert with the entered details.
+Learn About Event: A section with a placeholder image of the resort (Atlantis, Bahamas) and text describing the event (e.g., "Join us at Atlantis, Bahamas for the World Tournament Slots, Oct 22-26, 2025").
+Promotions Section: A simple section promoting the company’s other gaming apps with placeholder icons and text (e.g., "Play our award-winning slots").
+Design: Use a dark background (#1a1a1a), gold accents (#ffd700), and white text. Typography should be bold and modern, similar to the website in the image. Ensure mobile-friendly UX/UI.
+Phase 2: Event App
+
+Purpose: Extend the Phase 1 app to support the in-person event experience.
+Features:
+Itinerary: A list of event schedules (e.g., "10:00 AM - Opening Ceremony") with time and event name, styled with a clean layout. Use placeholder data.
+Venue Map: A static image of the venue map (use a placeholder image) with clickable areas to highlight key locations (e.g., "Main Stage," "Dinner Hall").
+Push Notifications: Set up admin-driven push notifications (e.g., "Dinner starting now") using Expo’s push notification service. Simulate sending a notification on a button press for testing.
+Design: Maintain the same dark, luxurious theme as Phase 1, ensuring consistency.
+Technical Requirements:
+
+Use React Native with Expo for a single codebase targeting iOS and Android.
+Structure the app with reusable components (e.g., one for the carousel, one for the form).
+Test the app using Expo Go by scanning the QR code on a physical device.
+Ensure the app is lightweight and performs well in Replit’s environment.
+Start with Phase 1, then extend to Phase 2. Focus on functionality first, then apply the luxurious design inspired by the image. Let me know if you need clarification on any feature!

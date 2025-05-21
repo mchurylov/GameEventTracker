@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Text, LogBox } from 'react-native';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Suppress the specific TurboModule warning
 LogBox.ignoreLogs(['TurboModuleRegistry']);

@@ -2,6 +2,14 @@
   "expo": {
     "name": "World Tournament Slots",
     "slug": "world-tournament-slots",
+    "extra": {
+      "eas": {
+        "projectId": "world-tournament-slots"
+      }
+    },
+    "owner": "replit",
+    "scheme": "world-tournament-slots",
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
